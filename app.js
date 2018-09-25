@@ -1,8 +1,10 @@
 const express = require('express');
 const path = require("path")
 const helmet = require('helmet');
-const port = 80;
+require('dotenv').config();
+
 const app = express();
+const port = process.env.PORT;
 
 app.use('/static', express.static('public'));
 app.use(helmet());

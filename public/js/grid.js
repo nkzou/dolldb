@@ -146,7 +146,7 @@ var columnDefs = [
 var rowData = [
   {
     name: "IWS 2000",
-    rarity: "5★★★★★",
+    rarity: "5★",
     type: "RF",
     fp: 162,
     acc: 78,
@@ -158,7 +158,7 @@ var rowData = [
   },
   {
     name: "PKP",
-    rarity: "5★★★★★",
+    rarity: "5★",
     type: "MG",
     fp: 120,
     acc: 30,
@@ -170,7 +170,7 @@ var rowData = [
   },
   {
     name: "ST AR-15",
-    rarity: "4★★★★",
+    rarity: "4★",
     type: "AR",
     fp: 120,
     acc: 30,
@@ -182,7 +182,7 @@ var rowData = [
   },
   {
     name: "UMP45",
-    rarity: "4★★★★",
+    rarity: "4★",
     type: "SMG",
     fp: 120,
     acc: 30,
@@ -194,7 +194,7 @@ var rowData = [
   },
   {
     name: "M37",
-    rarity: "4★★★★",
+    rarity: "4★",
     type: "SG",
     fp: 120,
     acc: 30,

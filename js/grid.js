@@ -7,7 +7,6 @@ function autoSizeAll() {
   gridOptions.api.resetRowHeights();
 }
 
-
 var columnDefs = [
   {
     headerName: "Name",
@@ -143,68 +142,6 @@ var columnDefs = [
   },
 
 ];
-var rowData = [
-  {
-    name: "IWS 2000",
-    rarity: "5★",
-    type: "RF",
-    fp: 162,
-    acc: 78,
-    eva: 29,
-    rof: 32,
-    hp: 440,
-    skill1: "Increases IWS-2000's damage by 180%, decreases her rate of fire by 35% for 10.0 seconds.",
-    skill2: ""
-  },
-  {
-    name: "PKP",
-    rarity: "5★",
-    type: "MG",
-    fp: 120,
-    acc: 30,
-    eva: 29,
-    rof: 150,
-    hp: 201,
-    skill1: "Something something 20% chance to crit.",
-    skill2: ""
-  },
-  {
-    name: "ST AR-15",
-    rarity: "4★",
-    type: "AR",
-    fp: 120,
-    acc: 30,
-    eva: 29,
-    rof: 150,
-    hp: 201,
-    skill1: "RoF buff something.",
-    skill2: ""
-  },
-  {
-    name: "UMP45",
-    rarity: "4★",
-    type: "SMG",
-    fp: 120,
-    acc: 30,
-    eva: 29,
-    rof: 150,
-    hp: 201,
-    skill1: "Decreases enemy damage or accuracy or something.",
-    skill2: ""
-  },
-  {
-    name: "M37",
-    rarity: "4★",
-    type: "SG",
-    fp: 120,
-    acc: 30,
-    eva: 29,
-    rof: 150,
-    hp: 201,
-    skill1: "Hits a target, knocks them back i think.",
-    skill2: ""
-  },
-];
 
 function generateDropdownFloatingFilter(htmlstring, modelmatchtype) {
   function DropdownFloatingFilter() {}
@@ -235,8 +172,9 @@ function generateDropdownFloatingFilter(htmlstring, modelmatchtype) {
   };
 
   DropdownFloatingFilter.prototype.onParentModelChanged = function (parentModel) {
-    /* Runs when the parent filter changes, to update the floating filter
+    // Runs when the parent filter changes, to update the floating filter
     // We don't need this because we won't allow anything to change the parent model.
+    /*
     if (!parentModel) {
       this.eFilterInput.value = '';
       this.currentValue = null;
@@ -270,6 +208,31 @@ const typedropdown = '<select id="tdrop" style="width:100%;">\
   <option value="smg">SMG</option>\
   <option value="sg">SG</option>\
   </select>'
+
+var rowData = [];
+const gfcore = window.gfcore;
+var dolls = gfcore.dolls;
+dolls.forEach(function(doll){
+  var s1 = "";
+  var s2 = "";
+  try {
+    s1 = doll.skill1.codename;
+    s2 = doll.skill2.codename;
+  } catch (err){}
+  var tmp = {
+    name:doll.codename,
+    rarity:doll.rank+"★",
+    type:doll.type.toUpperCase(),
+    fp:doll.stats.pow,
+    acc:doll.stats.hit,
+    eva:doll.stats.dodge,
+    rof:doll.stats.rate,
+    hp:doll.stats.hp,
+    skill1:s1,
+    skill2:s2
+  };
+  rowData.push(tmp);
+});
 var gridOptions = {
   components:{
     raritydropdown: generateDropdownFloatingFilter(raritydropdown, 'contains'),

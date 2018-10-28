@@ -1,9 +1,11 @@
 .cell-wrap-text {
   white-space: normal !important;
 }
-.navbar{
+
+.navbar {
   background-color: #444444;
 }
-.btn.btn-link{
+
+.btn.btn-link {
   color: whitesmoke !important;
 }

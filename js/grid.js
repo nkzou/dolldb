@@ -1,14 +1,4 @@
-function autoSizeAll() {
-  var allColumnIds = [];
-  gridOptions.columnApi.getAllColumns().forEach(function(column) {
-      allColumnIds.push(column.colId);
-  });
-  gridOptions.columnApi.autoSizeColumns(allColumnIds);
-  gridOptions.api.resetRowHeights();
-}
-
-var columnDefs = [
-  {
+var columnDefs = [{
     headerName: "Name",
     field: "name",
     minWidth: 110,
@@ -27,7 +17,7 @@ var columnDefs = [
     suppressResize: true,
     suppressMovable: true,
     filter: 'agTextColumnFilter',
-    floatingFilterComponent:'raritydropdown',
+    floatingFilterComponent: 'raritydropdown',
     floatingFilterComponentParams: {
       suppressFilterButton: true
     }
@@ -39,14 +29,14 @@ var columnDefs = [
     suppressResize: true,
     suppressMovable: true,
     filter: 'agTextColumnFilter',
-    floatingFilterComponent:'typedropdown',
+    floatingFilterComponent: 'typedropdown',
     floatingFilterComponentParams: {
       suppressFilterButton: true
     }
   }, {
     headerName: "FP",
     field: "fp",
-    minWidth: 110,
+    minWidth: 100,
     suppressMenu: true,
     suppressResize: true,
     suppressMovable: true,
@@ -60,7 +50,7 @@ var columnDefs = [
   }, {
     headerName: "ACC",
     field: "acc",
-    minWidth: 110,
+    minWidth: 100,
     suppressMenu: true,
     suppressResize: true,
     suppressMovable: true,
@@ -74,7 +64,7 @@ var columnDefs = [
   }, {
     headerName: "EVA",
     field: "eva",
-    minWidth: 110,
+    minWidth: 100,
     suppressMenu: true,
     suppressResize: true,
     suppressMovable: true,
@@ -88,7 +78,7 @@ var columnDefs = [
   }, {
     headerName: "ROF",
     field: "rof",
-    minWidth: 110,
+    minWidth: 100,
     suppressMenu: true,
     suppressResize: true,
     suppressMovable: true,
@@ -102,7 +92,7 @@ var columnDefs = [
   }, {
     headerName: "HP",
     field: "hp",
-    minWidth: 110,
+    minWidth: 100,
     suppressMenu: true,
     suppressResize: true,
     suppressMovable: true,
@@ -117,6 +107,7 @@ var columnDefs = [
     headerName: "Skill 1",
     field: "skill1",
     minWidth: 300,
+    maxWidth: 500,
     suppressMenu: true,
     suppressResize: true,
     suppressMovable: true,
@@ -130,6 +121,7 @@ var columnDefs = [
     headerName: "Skill 2",
     field: "skill2",
     minWidth: 300,
+    maxWidth: 500,
     suppressMenu: true,
     suppressResize: true,
     suppressMovable: true,
@@ -212,42 +204,59 @@ const typedropdown = '<select id="tdrop" style="width:100%;">\
 var rowData = [];
 const gfcore = window.gfcore;
 var dolls = gfcore.dolls;
-dolls.forEach(function(doll){
-  var s1 = "";
-  var s2 = "";
-  try {
-    s1 = doll.skill1.codename;
-    s2 = doll.skill2.codename;
-  } catch (err){}
-  var tmp = {
-    name:doll.codename,
-    rarity:doll.rank+"★",
-    type:doll.type.toUpperCase(),
-    fp:doll.stats.pow,
-    acc:doll.stats.hit,
-    eva:doll.stats.dodge,
-    rof:doll.stats.rate,
-    hp:doll.stats.hp,
-    skill1:s1,
-    skill2:s2
-  };
-  rowData.push(tmp);
-});
-var gridOptions = {
-  components:{
-    raritydropdown: generateDropdownFloatingFilter(raritydropdown, 'contains'),
-    typedropdown: generateDropdownFloatingFilter(typedropdown, 'equals')
-  },
-  columnDefs: columnDefs,
-  rowData: rowData,
-  enableSorting: true,
-  enableFilter: true,
-  multiSortKey: true,
-  floatingFilter: true,
-  rowSelection: "single"
-};
 
-var grid = document.querySelector('#dollGrid');
-new agGrid.Grid(grid, gridOptions);
-autoSizeAll();
-window.addEventListener("resize", gridOptions.api.sizeColumnsToFit());
+function setupGrid(tl) {
+
+  function autoSizeAll() {
+    var allColumnIds = [];
+    gridOptions.columnApi.getAllColumns().forEach(function (column) {
+      allColumnIds.push(column.colId);
+    });
+    gridOptions.columnApi.autoSizeColumns(allColumnIds);
+    gridOptions.api.resetRowHeights();
+  }
+  dolls.forEach(function (doll) {
+    var s1 = "";
+    var s2 = "";
+    try {
+      s1 = tl[doll.skill1.description];
+      s2 = tl[doll.skill2.description];
+    } catch (err) {}
+    var tmp = {
+      name: tl[doll.name],
+      rarity: doll.rank + "★",
+      type: doll.type.toUpperCase(),
+      fp: doll.stats.pow,
+      acc: doll.stats.hit,
+      eva: doll.stats.dodge,
+      rof: doll.stats.rate,
+      hp: doll.stats.hp,
+      skill1: s1,
+      skill2: s2
+    };
+    rowData.push(tmp);
+  });
+  var gridOptions = {
+    components: {
+      raritydropdown: generateDropdownFloatingFilter(raritydropdown, 'contains'),
+      typedropdown: generateDropdownFloatingFilter(typedropdown, 'equals')
+    },
+    columnDefs: columnDefs,
+    rowData: rowData,
+    enableSorting: true,
+    enableFilter: true,
+    multiSortKey: true,
+    floatingFilter: true,
+    rowSelection: "single"
+  };
+  var grid = document.querySelector('#dollGrid');
+  new agGrid.Grid(grid, gridOptions);
+  autoSizeAll();
+}
+//window.addEventListener("resize", gridOptions.api.sizeColumnsToFit());
+fetch('https://unpkg.com/girlsfrontline-core/build/i18n/en-US/gfcore.json')
+  .then(function (res) {
+    return res.json();
+  }).then(function (tl) {
+    setupGrid(tl);
+  });

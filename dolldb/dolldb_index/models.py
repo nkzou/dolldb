@@ -11,6 +11,13 @@ class doll(models.Model):
         ('SG','SG'),
         ('SMG','SMG'),
     )
-
+    RARITIES = (
+        (5,'★★★★★'),
+        (4,'★★★★'),
+        (3,'★★★'),
+        (2,'★★'),
+        (1,'⚝'),
+    )
     name = models.CharField(max_length=32)
     type = models.CharField(max_length=32, choices=DOLL_TYPES)
+    rarity = models.PositiveSmallIntegerField(choices=RARITIES)

@@ -1,7 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
 class doll(models.Model):
     DOLL_TYPES = (
         ('AR','AR'),
